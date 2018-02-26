@@ -1,0 +1,105 @@
+---
+title: "Sex biases brain volume estimates"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: 
+    latex_engine: xelatex
+---
+
+# Small analysis for sex effects on brain volume estimates.
+This datasets contains of real world dataset from an MRI study. Given are the variables SUBJECT_ID, AGE, SEX, HEAD_SIZE, BRAIN_VOLUME. HEAD_SIZE is equal to the head circumference in cm. BRAIN_VOLUME is the estimated volume by an MRI analysis software [FSL Sienax](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/SIENA).  
+We start by  read in the datafile and plot sex differences and associations of BRAIN_VOLUME with HEAD_SIZE. A strong association can be appreciated.
+
+```{r DATA IMPORT and EXPLORATION}
+rm(list=ls()) # Clear dataspace
+library(tidyverse)
+library(ggpubr)
+
+# Read in data
+my_data <-read_csv("Brain_Size.csv")
+
+# Specify group comparison for ggpubr - see below
+group_comparison_list <- list(c("F","M")) 
+
+# Plot SEX Difference in BRAIN_VOLUME
+plot1 <- ggboxplot(data = my_data, x = "SEX", 
+                   y = "BRAIN_VOLUME", col = "SEX", add = "jitter") +
+        stat_compare_means(method = "t.test", 
+                           comparisons = group_comparison_list,
+                           aes(label = ..p.format..) 
+                           )
+# Plot SEX Difference in HEAD_SIZE
+plot2 <- ggboxplot(data = my_data, x = "SEX", 
+                   y = "HEAD_SIZE", col = "SEX", add = "jitter") +
+        stat_compare_means(method = "t.test", 
+                           comparisons = group_comparison_list,
+                           aes(label = ..p.format..) 
+                           )
+# Plot BRAIN_VOLUME in HEAD_SIZE association
+plot3 <- ggscatter(data = my_data, x = "HEAD_SIZE", 
+                   y = "BRAIN_VOLUME", col = "SEX", add = "reg.line") +
+        stat_cor()
+
+ggarrange(plot1,plot2,plot3, nrow = 1, ncol = 3)
+
+rm(plot1,plot2,plot3)
+
+```
+
+# Adjust BRAIN_VOLUME for HEAD_SIZE
+Will now compare what happens if we correct BRAIN_VOLUME with HEAD_SIZE. How this is exactly done is not important. In short: a regression model is estimated, i.e. how strong is the association between BRAIN_VOLUME and HEAD_SIZE. The so called resiudals represent the adjusted values, basically what is left after correcting for the estimated HEAD_SIZE effect. We add the mean of BRAIN_VOLUME to get values in a meaningful range.
+If we then compare the SEX difference in BRAIN_VOLUME and BRAIN_VOLUME_ADJUSTED it becomes evident that the difference is "driven" by the difference in head size.
+
+```{r REGRESSION AND HEAD_SIZE CORRECTION}
+# Regression analyis
+head_size_fit <- lm(data = my_data, BRAIN_VOLUME ~ HEAD_SIZE)
+my_data$BRAIN_VOLUME_ADJUSTED <- head_size_fit$residuals + mean(my_data$BRAIN_VOLUME)
+
+# Comparison of original BRAIN_VOLUME and adjusted BRAIN_VOLUME_HEADSIZE_ADJ
+
+# Plot SEX Difference in BRAIN_VOLUME
+plot1 <- ggboxplot(data = my_data, x = "SEX", 
+                   y = "BRAIN_VOLUME", col = "SEX", add = "jitter") +
+        stat_compare_means(method = "t.test", 
+                           comparisons = group_comparison_list,
+                           aes(label = ..p.format..) 
+                           )
+# Plot SEX Difference in BRAIN_VOLUME_ADJUSTED
+plot2 <- ggboxplot(data = my_data, x = "SEX", 
+                   y = "BRAIN_VOLUME_ADJUSTED", col = "SEX", add = "jitter") +
+        stat_compare_means(method = "t.test", 
+                           comparisons = group_comparison_list,
+                           aes(label = ..p.format..) 
+                           )
+# Plot HEAD_SIZE to BRAIN_VOLUME_ADJUSTED
+plot3 <- ggscatter(data = my_data, x = "HEAD_SIZE", 
+                   y = "BRAIN_VOLUME_ADJUSTED", col = "SEX", add = "reg.line") +
+        stat_cor()
+
+
+ggarrange(plot1,plot2,plot3, nrow = 1, ncol = 3)
+rm(plot1,plot2,plot3)
+
+```
+
+# BRAIN_VOLUME AGE Association
+It is known that during Age the brain volume will get small due to atrophy. Compare the association between AGE and BRAIN_VOLUME and AGE and BRAIN_VOLUME_ADJUSTED. You can appreciate how the correction for HEAD_SIZE helped to sharpen this association by removing variability of brain volume due to different head sizes.
+
+```{r BRAIN_VOLUME AGE Association}
+
+# Plot BRAIN_VOLUME AGE Association
+plot_age1 <- ggscatter(data = my_data, x = "AGE", 
+                   y = "BRAIN_VOLUME", add = "reg.line") +
+        stat_cor()
+
+# Plot BRAIN_VOLUME_ADJUSTED AGE Association
+plot_age2 <- ggscatter(data = my_data, x = "AGE", 
+                   y = "BRAIN_VOLUME_ADJUSTED", add = "reg.line") +
+        stat_cor()
+
+
+ggarrange(plot_age1,plot_age2, nrow = 1, ncol = 2)
+
+```
+

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<meta name="progressive" content="false" />
+<meta name="allow-skip" content="false" />
+
+<title>Tutorial</title>
+
+
+<!-- highlightjs -->
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+
+
+<div class="pageContent band">
+<div class="bandContent page">
+
+<div class="topics">
+
+<div id="section-recap-of-last-session" class="section level2">
+<h2>Recap of last session</h2>
+<p>50 men and 50 women agreed to have their brain volume as well as their body weight measured. We put the resulting data into variable <code>my.data</code> in your R workspace. <code>my.data</code> is of type <code>data frame</code> (see Chapter 5 of course “Introduction to R”)</p>
+<div id="section-exercise" class="section level3">
+<h3>Exercise</h3>
+<ul>
+<li>Use <a href="https://www.rdocumentation.org/packages/base/versions/3.4.3/topics/summary"><code>summary()</code></a> on <code>my.data</code> to have a look at its structure.</li>
+<li>Calculate the mean (<span class="math inline">\(\mu\)</span>) of brain volume. brain volume is stored in field <code>brain</code> of <code>my.data</code>.</li>
+<li>Use <a href="https://www.rdocumentation.org/packages/stats/versions/3.4.3/topics/aggregate"><code>aggregate()</code></a> to calculate the mean for each gender.</li>
+<li>Do the same for the standard deviation (<span class="math inline">\(\sigma\)</span>).</li>
+</ul>
+<div class="tutorial-exercise" data-label="recap" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code># summary(my.data)
+
+
+#average brain
+
+
+#aggregate over gender and calculate the brain volume
+
+
+#aggregate over gender and calculate the standard deviation</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+<div class="tutorial-exercise-support" data-label="recap-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code># summary(my.data)
+summary(my.data)
+
+#average brain
+mean(my.data$brain)
+
+#aggregate over gender and calculate the brain volume
+aggregate(my.data$brain,list(my.data$gender),mean)
+
+#aggregate over gender and calculate the standard deviation
+aggregate(my.data$brain,list(my.data$gender),sd)</code></pre>
+</div>
+<div class="tutorial-exercise-support" data-label="recap-check" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+
+</div>
+</div>
+</div>
+<div id="section-barplot" class="section level2">
+<h2>Barplot</h2>
+<p>We provide dataframe <code>p.bar.data</code> that contains the mean and its standard error (<span class="math inline">\(\frac{\sigma}{\sqrt{N}}\)</span>) for the brain volume of each gender.</p>
+<p>You may want to use <a href="https://www.rdocumentation.org/packages/utils/versions/3.4.3/topics/str"><code>str()</code></a> or <a href="https://www.rdocumentation.org/packages/base/versions/3.4.3/topics/summary"><code>summary()</code></a> on <code>p.bar.data</code> to have a look at its structure.</p>
+<ul>
+<li>Use function <a href="https://www.rdocumentation.org/packages/ggplot2/versions/2.2.1/topics/ggplot"><code>ggplot()</code></a> for data mapping</li>
+<li>parameter <code>data</code> tells <code>ggplot</code> where your data is stored.</li>
+<li>parameter <code>aes</code> tells <code>ggplot</code> which parts of your data to map to the x-axis and the y-axis, respectively. You plan to plot gender against the respective average brain volume.</li>
+<li>Use <a href="https://www.rdocumentation.org/packages/ggplot2/versions/2.2.1/topics/geom_bar"><code>geom_bar()</code></a> to do a simple bar blot. Use <code>stat=&quot;identity&quot;</code> to make the heights of the bars represent values in the data mapped to the y-axis.</li>
+<li>Use <a href="https://www.rdocumentation.org/packages/ggplot2/versions/2.2.1/topics/geom_crossbar"><code>geom_errorbar()</code></a> to add error bars to the bar plot.</li>
+</ul>
+<div class="tutorial-exercise" data-label="barplot" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code># simple barplot assign this to variable p.bar
+p.bar &lt;- ggplot(aes(y=______,x=_____),data=p.bar.data)+
+  geom_bar(stat=&quot;______&quot;)
+
+# add error bars to p.bar
+p.bar &lt;- ggplot(aes(y=_____,x=_____),data=p.bar.data)+
+  geom_bar(stat=&quot;_____&quot;)+
+  geom_errorbar(aes(ymin=______,ymax=_____),width=0.3)
+
+# plot p.bar
+plot(p.bar)</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+<div class="tutorial-exercise-support" data-label="barplot-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code># simple barplot assign this to variable p.bar
+p.bar &lt;- ggplot(aes(y=mean_brain,x=gender),data=p.bar.data)+
+  geom_bar(stat=&quot;identity&quot;)
+
+#add error bars to p.bar
+p.bar &lt;- ggplot(aes(y=mean_brain,x=gender),data=p.bar.data)+
+  geom_bar(stat=&quot;identity&quot;)+
+  geom_errorbar(aes(ymin=ymin,ymax=ymax),width=0.3)
+
+# plot p.bar
+plot(p.bar)</code></pre>
+</div>
+</div>
+<div id="section-central-tendency-dispersion-and-skew" class="section level2">
+<h2>Central tendency, dispersion, and skew</h2>
+<p>We already introduced central tendency measures of a distribution (mean (<span class="math inline">\(\mu\)</span>) and median) and spread (dispersion) of a distribution (variance (<span class="math inline">\(\sigma^2\)</span>) and standard deviation (<span class="math inline">\(\sigma\)</span>)).</p>
+<p>A normal distribution is symmetrical, i.e. <span class="math inline">\(mean = median\)</span>. Whenever a distribution is not symmetrical: <span class="math inline">\(mean\neq median\)</span>.</p>
+<p>You can find additional, more in depth material about mean, variance, and skew of a distribution at <a href="https://www.youtube.com/watch?v=fv5QB3eK7jA">Moments of Distributions</a> and <a href="https://www.youtube.com/watch?v=HnMGKsupF8Q">Normal Distributions, Standard Deviations, Modality, Skewness and Kurtosis: Understanding concepts</a>.</p>
+</div>
+<div id="section-plot-of-a-normal-distribution" class="section level2">
+<h2>Plot of a normal distribution</h2>
+<p>The variable <code>p.norm</code> provided in your workspace contains data for a probability density function (PDF) in its <code>data</code> field.</p>
+<p>Plotting <code>p.norm</code> results in a graph where the red line represents <span class="math inline">\(\mu\)</span> and the blue dashed line represents the median, respectively.</p>
+<p>The dark gray area represents <span class="math inline">\(\mu\pm1\sigma\)</span> and covers ~67% of the area under the curve, the light gray area represents <span class="math inline">\(\mu\pm2\sigma\)</span> and covers ~95% of the area under the curve.</p>
+<p><img src="Boxplot_files/figure-html4/unnamed-chunk-1-1.png" width="624" /></p>
+<p><code>p.norm$data</code> holds values corresponding to a PDF of a normal distribution with <span class="math inline">\(\mu=0, \sigma=2\)</span> in its <code>y2</code> field. Add a layer to the previous plot by adding a <code>geom_line</code> that uses <code>y2</code> as y-aesthetic. That <code>geom_line</code> produces a graph in green.</p>
+<div class="tutorial-exercise" data-label="plot_density" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>#add a layer for a PDF with sigma=2 
+p.norm&lt;-p.norm+geom_line(aes(y=_____),col=&quot;green&quot;)
+p.norm</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+<div class="tutorial-exercise-support" data-label="plot_density-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>#add a layer for a PDF with sigma=2 
+p.norm&lt;-p.norm+geom_line(aes(y=y2),col=&quot;green&quot;)
+p.norm</code></pre>
+</div>
+</div>
+<div id="section-plot-of-a-skewed-distribution" class="section level2">
+<h2>Plot of a skewed distribution</h2>
+<p>The variable <code>p.skew</code> provided in your workspace contains data for a skewed distribution.</p>
+<ul>
+<li>plot <code>p.skew</code> to look at the resulting graph. Do you see the difference to a plot of a normal distribution?</li>
+</ul>
+<div class="tutorial-exercise" data-label="plot_skewed" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>#plot skewed distribution
+p.skew</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+</div>
+<div id="section-boxplot" class="section level2">
+<h2>Boxplot</h2>
+<p>As seen in the previous exercise, some distributions may be skewed. This may also be true for data you collected. Therefore, it is a good idea to visualize your data by using plots that include spread (dispersion) and skew. One example in R is the function <a href="https://www.rdocumentation.org/packages/graphics/versions/3.4.3/topics/boxplot"><code>boxplot()</code></a>.</p>
+<p>A boxplot displays more information than a barplot: - A box describes the inter quartile range (<code>IQR</code>) of a distribution. 50% of the data points lie within the box. The bottom of the box lies at 25% (first quartile), the top at 75% (third quartile) of the data.</p>
+<ul>
+<li><p>The line in the center of the box represents the median, i.e. 50% of the data points lie above this value and 50% lie below this value. If this line is shifted off center, the data is skewed, i.e <span class="math inline">\(mean\neq median\)</span>.</p></li>
+<li><p>The whiskers (small lines protruding from the box) have an intervall of <code>1.5*IQR</code> on each side of the box.</p></li>
+<li><p>Data points outside the whiskers’ range are called outliers.</p></li>
+</ul>
+<p>See <a href="http://www.physics.csbsju.edu/stats/box2.html">Box Plot: Display of Distribution</a> for further details on the layout of boxplots.</p>
+<p>Here we will use the <code>ggplot2</code> library to plot a boxplot. This library is built on the grammar of graphics by Leland Wilkinson. The library offers excellent plotting capabilities that allow for a wide range of customisation. In the code on the right the function <a href="https://www.rdocumentation.org/packages/ggplot2/versions/2.2.1/topics/aes"><code>aes()</code></a>, describes how data are mapped to visual properties (aesthetics) of geometric objects (geoms). In this case a <code>geom_boxplot</code> to depict a boxplot.</p>
+<p>Execute the code on the right to view a boxplot. Outliers are depicted by dots. Have a look at the plot.</p>
+<div class="tutorial-exercise" data-label="boxplot" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>p.box&lt;-ggplot(aes(y=brain,x=gender),data=my.data)+
+    geom_boxplot()
+plot(p.box)</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+</div>
+<div id="section-boxplot-and-individual-data-points" class="section level2">
+<h2>Boxplot and individual data points</h2>
+<p>Overlaying a boxplot with the individual data points potentially yields additional insights into the data structure.</p>
+<p>Here, we will add a scatterplot to our previous plot. Using <a href="https://www.rdocumentation.org/packages/ggplot2/versions/2.2.1/topics/geom_jitter"><code>geom_jitter()</code></a> jitters (randomly displaces) data points along the x-axis without changing their y-value, thus making it possible to view all data points without interference.</p>
+<p>Remember your variable <code>my.data</code>? - Fill in the gaps in the code provided to create a boxplot of brain volume versus gender. - Use <a href="https://www.rdocumentation.org/packages/ggplot2/versions/2.2.1/topics/geom_jitter"><code>geom_jitter()</code></a> to add the individual data points.</p>
+<p>Outliers are depicted by dots.</p>
+<div class="tutorial-exercise" data-label="boxplot2" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>p.box&lt;-ggplot(aes(y=_____,x=_____),data=_____)+
+    geom_boxplot()+
+    geom_jitter(width=.1,col=&quot;red&quot;)
+    
+plot(p.box)</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+<div class="tutorial-exercise-support" data-label="boxplot2-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>p.box&lt;-ggplot(aes(y=brain,x=gender),data=my.data)+
+    geom_boxplot()+
+    geom_jitter(width=.1,col=&quot;red&quot;)
+    
+plot(p.box)</code></pre>
+</div>
+</div>
+<div id="section-plot-aesthetics" class="section level2">
+<h2>Plot aesthetics</h2>
+<p>As mentioned earlier customisation is a strong feature of the <code>ggplot2</code> library. Customisation may be used to make plots publication ready.</p>
+<p>For convenience, plot commands can be assigned to a variable (in our case <code>p.box</code>). Operator <code>+</code> may be used for overlays as well as for adding plot options. This may enhance your code’s readability as well as its reproducibility.</p>
+<p>To actually see the plot use <a href="https://www.rdocumentation.org/packages/graphics/versions/3.4.3/topics/plot"><code>plot()</code></a> or just type in the name or the variable and execute.</p>
+<p>Let’s add some colour to the plot.</p>
+<ul>
+<li>The first line of the code provided will create a boxplot with fill colours defined by gender.</li>
+<li>Change the two colours to obvious stereotypes like “pink” and “light blue”!</li>
+</ul>
+<div class="tutorial-exercise" data-label="boxplot_aesthetics" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>#boxplot
+p.box&lt;-
+  ggplot(aes(y=brain,x=gender,fill=gender),data=my.data) +
+  geom_boxplot()
+plot(p.box)
+# change the two colours 
+p.box&lt;- p.box+
+  scale_fill_manual(values=c(&quot;_____&quot;,&quot;_____&quot;))
+plot(p.box)</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+<div class="tutorial-exercise-support" data-label="boxplot_aesthetics-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>#boxplot
+p.box&lt;-
+  ggplot(aes(y=brain,x=gender,fill=gender),data=my.data) +
+  geom_boxplot()
+plot(p.box)
+# change the two colours 
+p.box&lt;- p.box+
+  scale_fill_manual(values=c(&quot;pink&quot;,&quot;light blue&quot;))
+plot(p.box)</code></pre>
+</div>
+</div>
+<div id="section-themes-and-legends" class="section level2">
+<h2>Themes and Legends</h2>
+<p>Now we will customise a plot to remove some clutter.</p>
+<p>Themes define non-data components of a plot (background color, panel background color and grid lines). Library <code>ggplot2</code> provides several pre-defined themes. See [<code>ggtheme()</code>] (<a href="https://www.rdocumentation.org/packages/ggplot2/versions/2.2.1/topics/ggtheme" class="uri">https://www.rdocumentation.org/packages/ggplot2/versions/2.2.1/topics/ggtheme</a>) for more information.</p>
+<p>Position and layout of plot legends can be manipulated by adjusting parameters <code>legend.foo</code> in function [<code>theme()</code>] (<a href="https://www.rdocumentation.org/packages/ggplot2/versions/2.2.1/topics/theme" class="uri">https://www.rdocumentation.org/packages/ggplot2/versions/2.2.1/topics/theme</a>).</p>
+<ul>
+<li>Add a theme! Examples of theme provided by R are <code>theme_classic()</code> and <code>theme_minimal()</code>.</li>
+<li>Valid legend positions are <code>none</code>, <code>left</code>, <code>right</code>, <code>bottom</code>, <code>top</code>. Remove the legend!</li>
+</ul>
+<div class="tutorial-exercise" data-label="boxplot_themes" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>p.box&lt;-
+  ggplot(aes(y=brain,x=gender,fill=gender),data=my.data) +
+  geom_boxplot()+
+  scale_fill_manual(values=c(&quot;pink&quot;,&quot;light blue&quot;))
+plot(p.box)
+# add a theme 
+p.box&lt;- p.box+  
+  theme_c_____()
+plot(p.box)
+# remove the legend
+p.box&lt;- p.box+  
+  theme(legend._____ = &#39;_____&#39;)
+plot(p.box)</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+<div class="tutorial-exercise-support" data-label="boxplot_themes-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>#boxplot as created previously
+p.box&lt;-
+  ggplot(aes(y=brain,x=gender,fill=gender),data=my.data) +
+  geom_boxplot()+
+  scale_fill_manual(values=c(&quot;pink&quot;,&quot;light blue&quot;))
+plot(p.box)
+# add a theme 
+p.box&lt;- p.box+  
+  theme_classic()
+plot(p.box)
+# remove the legend
+p.box&lt;- p.box+  
+  theme(legend.position = &#39;none&#39;)
+plot(p.box)</code></pre>
+</div>
+</div>
+<div id="section-relationship-between-variables" class="section level2">
+<h2>Relationship between variables</h2>
+<p>So far, we plotted a continuous variable (brain volume) against a factorial variable (gender).</p>
+<p>Now, we will investigate the relationship between two continuous variables of our data: brain volume and head size,</p>
+<p>Function [<code>geom_point()</code>] (<a href="https://www.rdocumentation.org/packages/ggplot2/versions/2.2.1/topics/geom_point" class="uri">https://www.rdocumentation.org/packages/ggplot2/versions/2.2.1/topics/geom_point</a>) creates a layer with a dot for each continuous variable pair.</p>
+<ul>
+<li>Fill in the blanks in the aesthetics (<code>aes</code>) statement.</li>
+<li>Plot brain volume against body weight.</li>
+<li>Arrange for the dots being coloured according to gender.</li>
+</ul>
+<div class="tutorial-exercise" data-label="relationship" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>#relationship between brain volume and body weight
+ggplot(aes(y=_____,x=____),data=my.data)+
+    geom_point()
+#add colours for female and male data
+#and add meaningfull axis labels
+ggplot(aes(y=____,x=____,col=____),data=my.data)+
+    geom_point()+
+    xlab(&#39;body weight [kg]&#39;)+ylab(&#39;brain volume [cmm]&#39;)</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
+</div>
+<div class="tutorial-exercise-support" data-label="relationship-solution" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>#relationship between brain volume and body weight
+ggplot(aes(y=brain,x=head),data=my.data)+
+    geom_point()
+#add colours for female and male data
+#and add meaningfull axis labels
+ggplot(aes(y=brain,x=head,col=gender),data=my.data)+
+    geom_point()+
+    xlab(&#39;body weight [kg]&#39;)+ylab(&#39;brain volume [cmm]&#39;)</code></pre>
+</div>
+
+<script type="application/shiny-prerendered" data-context="server-start">
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+# The pre exercise code runs code to initialize the user's workspace.
+# You can use it to load packages, initialize datasets and draw a plot in the viewer
+library(tidyverse)
+library(ggplot2)
+#n<-100
+#set.seed(123)
+#my.data<-data.frame(gender=c(rep("male",n),rep("female",n)), brain=c(rnorm(n,1273,100),rnorm(n,1131,100)))
+#my.data <-
+#  my.data %>% 
+#  mutate(body=brain/17+rnorm(n*2,0,5))
+my.data<-read.csv("Brain_size.csv")
+names(my.data)<-c("id","age","gender","head","brain")
+p.bar.data<-
+  my.data %>% 
+  group_by(gender) %>% 
+  summarise(N=n(),
+  		 mean_brain=mean(brain),         
+         sem_brain=sd(brain)/sqrt(N)) %>% 
+  mutate(ymin=mean_brain-sem_brain,ymax=mean_brain+sem_brain)
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::register_http_handlers(session, metadata = NULL)
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-recap-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-recap-code-editor`)), session)
+output$`tutorial-exercise-recap-output` <- renderUI({
+  `tutorial-exercise-recap-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-barplot-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-barplot-code-editor`)), session)
+output$`tutorial-exercise-barplot-output` <- renderUI({
+  `tutorial-exercise-barplot-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-plot_density-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-plot_density-code-editor`)), session)
+output$`tutorial-exercise-plot_density-output` <- renderUI({
+  `tutorial-exercise-plot_density-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-plot_skewed-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-plot_skewed-code-editor`)), session)
+output$`tutorial-exercise-plot_skewed-output` <- renderUI({
+  `tutorial-exercise-plot_skewed-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-boxplot-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-boxplot-code-editor`)), session)
+output$`tutorial-exercise-boxplot-output` <- renderUI({
+  `tutorial-exercise-boxplot-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-boxplot2-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-boxplot2-code-editor`)), session)
+output$`tutorial-exercise-boxplot2-output` <- renderUI({
+  `tutorial-exercise-boxplot2-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-boxplot_aesthetics-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-boxplot_aesthetics-code-editor`)), session)
+output$`tutorial-exercise-boxplot_aesthetics-output` <- renderUI({
+  `tutorial-exercise-boxplot_aesthetics-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-boxplot_themes-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-boxplot_themes-code-editor`)), session)
+output$`tutorial-exercise-boxplot_themes-output` <- renderUI({
+  `tutorial-exercise-boxplot_themes-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-relationship-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-relationship-code-editor`)), session)
+output$`tutorial-exercise-relationship-output` <- renderUI({
+  `tutorial-exercise-relationship-result`()
+})
+</script>
+ <!--html_preserve-->
+<script type="application/shiny-prerendered" data-context="dependencies">
+{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["jquery"]},{"type":"character","attributes":{},"value":["1.11.3"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/jquery-1.11.3"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["jquery.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["bootstrap"]},{"type":"character","attributes":{},"value":["3.3.5"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/bootstrap-3.3.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["viewport"]}},"value":[{"type":"character","attributes":{},"value":["width=device-width, initial-scale=1"]}]},{"type":"character","attributes":{},"value":["js/bootstrap.min.js","shim/html5shiv.min.js","shim/respond.min.js"]},{"type":"character","attributes":{},"value":["css/cerulean.min.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["pagedtable"]},{"type":"character","attributes":{},"value":["1.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/pagedtable-1.1"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["js/pagedtable.js"]},{"type":"character","attributes":{},"value":["css/pagedtable.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["highlightjs"]},{"type":"character","attributes":{},"value":["1.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["href"]}},"value":[{"type":"character","attributes":{},"value":["Boxplot_files/highlightjs-1.1"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["highlight.js"]},{"type":"character","attributes":{},"value":["textmate.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial.js"]},{"type":"character","attributes":{},"value":["tutorial.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-autocompletion"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-autocompletion.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-diagnostics"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-diagnostics.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-format"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmarkdown/templates/tutorial/resources"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-format.js"]},{"type":"character","attributes":{},"value":["tutorial-format.css","rstudio-theme.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["jquery"]},{"type":"character","attributes":{},"value":["1.11.3"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/jquery-1.11.3"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["jquery.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["font-awesome"]},{"type":"character","attributes":{},"value":["4.5.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/font-awesome-4.5.0"]}]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["css/font-awesome.min.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["bootbox"]},{"type":"character","attributes":{},"value":["4.4.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/bootbox"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["bootbox.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["localforage"]},{"type":"character","attributes":{},"value":["1.5"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/localforage"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["localforage.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial.js"]},{"type":"character","attributes":{},"value":["tutorial.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-autocompletion"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-autocompletion.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-diagnostics"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-diagnostics.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]}]}
+</script>
+<!--/html_preserve-->
+</div>
+
+</div> <!-- topics -->
+
+<div class="topicsContainer">
+<div class="topicsPositioner">
+<div class="band">
+<div class="bandContent topicsListContainer">
+
+<!-- begin doc-metadata -->
+<div id="doc-metadata">
+<h2 class="title toc-ignore" style="display:none;">Tutorial</h2>
+</div>
+<!-- end doc-metadata -->
+
+</div> <!-- bandContent.topicsListContainer -->
+</div> <!-- band -->
+</div> <!-- topicsPositioner -->
+</div> <!-- topicsContainer -->
+
+
+</div> <!-- bandContent page -->
+</div> <!-- pageContent band -->
+
+
+
+
+<script>
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+
+</html>
